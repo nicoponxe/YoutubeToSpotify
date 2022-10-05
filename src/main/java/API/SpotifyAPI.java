@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 
 public class SpotifyAPI {
 
-    private String authentication = "Bearer BQDrgXfsoWukL0CW1iKBD4S4Qq6JbaSgRXtgFEmgM_VngBvAdn26W7oPnjnsbxyvpubN1fBFasUMhMkHYqAJOsUrQfLUdOccFO7WC3R14w8Y9hJIYqUG355QrLSIgeDpZUgDK7zsa0XQOhDAWXEKL-02Ar0TY1rUg2EgXSEbAl_Tm_lN";
+    private String authentication; // Generar Token OAuth 2.0
     private String id; //ID de usuario en spotify
 
     public SpotifyAPI() {  //Constructor que almaneca en variable el ID del usuario en spotify
