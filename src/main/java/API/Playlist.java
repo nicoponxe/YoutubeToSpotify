@@ -25,20 +25,22 @@ public class Playlist {
 
         if (playlistID != null){  //si existe, solo agrega canciones.
             AgregoCancionesAPlaylist(videos, playlistID);
-        }else{ // si no existe, se crea y agrego canciones.
-            AgregoCancionesAPlaylist(videos, spotify.CrearPlaylist());
+        }else{ // si no existe, crea playlist y agrego canciones.
+            playlistID = spotify.CrearPlaylist();
+            AgregoCancionesAPlaylist(videos, playlistID );
         }
     }
 
     private void AgregoCancionesAPlaylist(JSONArray videos, String playlist) throws IOException {  /** Funcion que recibe los video con Me Gusta que se quieren transformar y agregar
-                                                                                                             como canciones a playlist de Spotify.
-                                                                                                        */
+                                                                                                       como canciones a playlist de Spotify.*/
+
         for (Object video : videos) {   //Recorro cada video leyendo su titulo, busco cancion en spotify y de existir, se agrega a playlist
 
             if (video != null && video instanceof JSONObject vid){
 
                 String titulo = NormalizoTexto(vid.getJSONObject("snippet").getString("title"));  //Normalizo el titulo del video
                 String cancionURI = spotify.Cancion(titulo); //Busco titulo del video en Spotify, devuelve codigo URI de la primer cancion encontrada,
+
                 if (cancionURI != null){                    // si existe, la agrega.
                     spotify.AgregarCancionAPlaylist(cancionURI, playlist);
                 }
