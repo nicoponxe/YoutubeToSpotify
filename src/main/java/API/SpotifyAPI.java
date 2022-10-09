@@ -78,7 +78,7 @@ public class SpotifyAPI {
     //Solicitudes (requests)
 
 
-    private boolean Post(String uri, String data) throws IOException {  //Sobrecarga para realizar post con body
+    private boolean Post(String uri, String data) throws IOException {  
         URL url = new URL(uri);
         HttpURLConnection http = (HttpURLConnection)url.openConnection();
         http.setRequestMethod("POST");
@@ -92,9 +92,6 @@ public class SpotifyAPI {
         OutputStream stream = http.getOutputStream();
         stream.write(out);
 
-        int respuesta = http.getResponseCode();
-        String respuesta2 = http.getResponseMessage();
-
         if (http.getResponseCode() == 201){ //201 = Creada/agregada
             http.disconnect();
             return true;
@@ -102,6 +99,7 @@ public class SpotifyAPI {
             return false;
         }
     }
+    
 
     private JSONObject Get(String uri) throws IOException {
 
