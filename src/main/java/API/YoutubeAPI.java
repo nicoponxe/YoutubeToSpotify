@@ -39,7 +39,7 @@ public class YoutubeAPI{
         // Define and execute the API request
         YouTube.Videos.List request = youtubeService.videos()
                 .list(Collections.singletonList("snippet,contentDetails,statistics")); //tomo los ultimos 10 videos
-        VideoListResponse response = request.setMaxResults(10L).setMyRating("like").execute();
+        VideoListResponse response = request.setMaxResults(25L).setMyRating("like").execute();
         JSONObject videos = new JSONObject(response.toString());   //Recupero solo los videos
         return videos;
     }
