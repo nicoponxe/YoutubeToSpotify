@@ -68,7 +68,7 @@ public class SpotifyAPI {
     }
 
 
-    public boolean AgregarCancionAPlaylist(String cancion, String playlist) throws IOException {   //sobrecarga de metodo para agregar canciones
+    public boolean AgregarCancionAPlaylist(String cancion, String playlist) throws IOException {   
 
         String json = "{\"uris\":[\""+cancion+"\"],\"position\":0}";
         return Post("https://api.spotify.com/v1/playlists/"+playlist+"/tracks", json);
@@ -114,7 +114,7 @@ public class SpotifyAPI {
 
         if (conn.getResponseCode() == 200) {
             StringBuffer response = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));  //El bufferreader se cierra solo porque adentro tiene un reader, LEER igual.
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));  
             String line;
             while ((line = reader.readLine()) != null) {
                 response.append(line);
