@@ -10,7 +10,7 @@ public class Playlist {
 
     private SpotifyAPI spotify = new SpotifyAPI();
     private YoutubeAPI youtube = new YoutubeAPI();
-    private String playlistID; //ID que representa la nueva playlist en Spotify
+    private String playlistID; //ID de playlist en Spotify
 
     public void CrearPlaylist() throws GeneralSecurityException, IOException {
 
@@ -20,7 +20,7 @@ public class Playlist {
         //Spotify
         JSONArray playlists = spotify.Playlists();  //Recupero todas las playlists del usuario en Spotify
 
-        playlistID =  CreoPlaylistID(playlists);  //Verifico que la playlist a crear no exista, caso contrario, la creo y recupero su ID.
+        playlistID =  PlaylistID(playlists);  //Verifico que la playlist a crear no exista, caso contrario, la creo y recupero su ID.
 
         if (playlistID != null){  //si existe, agrega canciones.
             AgregoCancionesAPlaylist(videos, playlistID);
@@ -52,8 +52,8 @@ public class Playlist {
         return texto;
     }
 
-    private String CreoPlaylistID(JSONArray playlists) throws IOException {  //funcion que recorre y verifica si existe la playlist en spotify que quiero crear.
-                                                                            // Si existe, la crea y devuelve su ID.
+    private String PlaylistID(JSONArray playlists) throws IOException {  //funcion que recorre y verifica si existe la playlist en spotify que quiero crear.
+                                                                // Si existe, la crea y devuelve su ID.
         String id = null;
 
         for ( Object playlist : playlists ) {
@@ -62,7 +62,7 @@ public class Playlist {
                     id = p.getString("id");
                     break;
                 }
-            } 
+            }
         }
         if (id == null){
             id = spotify.CrearPlaylist();
