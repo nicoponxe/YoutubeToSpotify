@@ -20,18 +20,15 @@ public class Playlist {
         //Spotify
         JSONArray playlists = spotify.Playlists();  //Recupero todas las playlists del usuario en Spotify
 
+        playlistID =  CreoPlaylistID(playlists);  //Verifico que la playlist a crear no exista, caso contrario, la creo y recupero su ID.
 
-        playlistID =  ExistePlaylistID(playlists);  //Verifico que la playlist a crear no exista, caso contrario, recupero su ID.
-
-        if (playlistID != null){  //si existe, solo agrega canciones.
+        if (playlistID != null){  //si existe, agrega canciones.
             AgregoCancionesAPlaylist(videos, playlistID);
-        }else{ // si no existe, crea playlist y agrego canciones.
-            playlistID = spotify.CrearPlaylist();
-            AgregoCancionesAPlaylist(videos, playlistID );
         }
+        
     }
 
-    private void AgregoCancionesAPlaylist(JSONArray videos, String playlist) throws IOException {  /** Funcion que recibe los video con Me Gusta que se quieren transformar y agregar
+    private void AgregoCancionesAPlaylist(JSONArray videos, String playlist) throws IOException {  /** Funcion que recibe los video que se quieren transformar y agregar
                                                                                                        como canciones a playlist de Spotify.*/
 
         for (Object video : videos) {   //Recorro cada video leyendo su titulo, busco cancion en spotify y de existir, se agrega a playlist
@@ -41,7 +38,7 @@ public class Playlist {
                 String titulo = NormalizoTexto(vid.getJSONObject("snippet").getString("title"));  //Normalizo el titulo del video
                 String cancionURI = spotify.Cancion(titulo); //Busco titulo del video en Spotify, devuelve codigo URI de la primer cancion encontrada,
 
-                if (cancionURI != null){                    // si existe, la agrega.
+                if (cancionURI != null){  // si la cancion existe, la agrega.
                     spotify.AgregarCancionAPlaylist(cancionURI, playlist);
                 }
             }
@@ -55,8 +52,8 @@ public class Playlist {
         return texto;
     }
 
-    private String ExistePlaylistID(JSONArray playlists){  //funcion que recorre y verifica si existe la playlist en spotify que quiero crear.
-                                                                // Si existe, devuelve su ID.
+    private String CreoPlaylistID(JSONArray playlists) throws IOException {  //funcion que recorre y verifica si existe la playlist en spotify que quiero crear.
+                                                                            // Si existe, la crea y devuelve su ID.
         String id = null;
 
         for ( Object playlist : playlists ) {
@@ -65,9 +62,13 @@ public class Playlist {
                     id = p.getString("id");
                     break;
                 }
-            } id = null;
+            } 
+        }
+        if (id == null){
+            id = spotify.CrearPlaylist();
         }
         return id;
+
     }
 
 }
