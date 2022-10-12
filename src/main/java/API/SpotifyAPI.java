@@ -111,9 +111,9 @@ public class SpotifyAPI {
 
         String respuesta = conn.getResponseMessage();
 
-        if (conn.getResponseCode() == 200) {
+        if (conn.getResponseCode() == 200) {  //200 = OK
             StringBuffer response = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));  //El bufferreader se cierra solo porque adentro tiene un reader, LEER igual.
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));  
             String line;
             while ((line = reader.readLine()) != null) {
                 response.append(line);
