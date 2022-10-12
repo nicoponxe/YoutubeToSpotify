@@ -10,12 +10,12 @@ import java.nio.charset.StandardCharsets;
 
 public class SpotifyAPI {
 
-    private String authentication = "TOKEN AUTH";
+    private String authentication = "SPOTIFY OAuth Token";
     private String id; //ID de usuario en spotify
 
-    public SpotifyAPI() {  //Constructor que almaneca en variable el ID del usuario en spotify
+    public SpotifyAPI() {  
         try {
-            this.id = UsuarioID();
+            this.id = UsuarioID(); //recupero ID de usuario
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -50,6 +50,8 @@ public class SpotifyAPI {
 
     public String CrearPlaylist() throws IOException {   // Agrego cancion a playlist y devuelvo su ID
 
+        String playlistID = null;
+
         String json = new JSONObject()
                 .put("name", "Songs from Youtube")
                 .put("description", "Canciones de videos de youtube likeados")
@@ -57,7 +59,6 @@ public class SpotifyAPI {
                 .toString();
 
         Boolean creado = Post("https://api.spotify.com/v1/users/" + this.id + "/playlists", json);
-        String playlistID = null;
 
         if (creado) {
             JSONArray playlists = Playlists(); // Recorro playlist para encontrar el ID de la nueva playlist
@@ -68,7 +69,7 @@ public class SpotifyAPI {
     }
 
 
-    public boolean AgregarCancionAPlaylist(String cancion, String playlist) throws IOException {   
+    public boolean AgregarCancionAPlaylist(String cancion, String playlist) throws IOException {   //sobrecarga de metodo para agregar canciones
 
         String json = "{\"uris\":[\""+cancion+"\"],\"position\":0}";
         return Post("https://api.spotify.com/v1/playlists/"+playlist+"/tracks", json);
@@ -78,7 +79,7 @@ public class SpotifyAPI {
     //Solicitudes (requests)
 
 
-    private boolean Post(String uri, String data) throws IOException {  
+    private boolean Post(String uri, String data) throws IOException {
         URL url = new URL(uri);
         HttpURLConnection http = (HttpURLConnection)url.openConnection();
         http.setRequestMethod("POST");
@@ -86,7 +87,6 @@ public class SpotifyAPI {
         http.setRequestProperty("Accept", "application/json");
         http.setRequestProperty("Content-Type", "application/json");
         http.setRequestProperty("Authorization", authentication);
-
 
         byte[] out = data.getBytes(StandardCharsets.UTF_8);
         OutputStream stream = http.getOutputStream();
@@ -99,7 +99,6 @@ public class SpotifyAPI {
             return false;
         }
     }
-    
 
     private JSONObject Get(String uri) throws IOException {
 
@@ -114,7 +113,7 @@ public class SpotifyAPI {
 
         if (conn.getResponseCode() == 200) {
             StringBuffer response = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));  
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));  //El bufferreader se cierra solo porque adentro tiene un reader, LEER igual.
             String line;
             while ((line = reader.readLine()) != null) {
                 response.append(line);
@@ -132,7 +131,3 @@ public class SpotifyAPI {
 
 
 }
-
-
-
-
